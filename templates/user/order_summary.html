@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Order Summary</h2>
+    
+    <p>Order ID: {{ order.id }}</p>
+    <p>Status: {{ order.status }}</p>
+
+    <h4>Items:</h4>
+    <ul>
+        {% for item in order.order_items.all %}
+            <li>{{ item.quantity }} x {{ item.product.name }} - ₹{{ item.price }}</li>
+        {% endfor %}
+    </ul>
+
+    <h4>Total: ₹{{ order.total_price }}</h4>
+</div>
+{% endblock %}

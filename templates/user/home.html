@@ -1,0 +1,536 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYPerfume</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet">
+
+
+</head>
+<style>
+   
+  .modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .modal-body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+
+</style>
+<body>
+    
+        <header>
+        <div class="header">
+
+        
+            <div class="icons">
+                <a href="#" target="_blank">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                
+                <a href="#" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                
+                <a href="#" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                
+                
+            </div>
+            <div class="free">
+               
+                    <i class="fas fa-truck"></i><p>Free Delivery for all products</p>
+                
+                
+                    
+               
+            </div>
+        </div>
+        </header>
+        <div class="container">
+        <nav>
+            <div>
+                <img src="/media/download.png" alt="logo">
+            </div>
+            <div>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="">Customised Perfume</a></li>
+                    <li><a href="">Our store</a></li>
+                    <li><a href="">About us</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <a href="#" title="Search">
+                    <i class="fa-solid fa-magnifying-glass fa-2x"></i> <!-- Search Icon -->
+                </a>
+                
+                <a href="/profile" title="Profile">
+                    <i class="fa-solid fa-user fa-2x"></i> <!-- Profile Icon -->
+                </a>
+                
+                <a href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+                    <i class="fa-solid fa-shopping-cart fa-2x"></i>
+                  </a>
+                  
+                
+            </div>
+        </nav>
+        {% block content %}
+        <div class="slider-container mb-5">
+            <img src="https://myop.in/cdn/shop/files/desktop_cosmo_1.webp?v=1740146381&width=1400" class="active" alt="Slide 1">
+            <img src="https://myop.in/cdn/shop/files/AFTERPARTY_DESK.webp?v=1740545136&width=1400" alt="Slide 2">
+            <img src="https://myop.in/cdn/shop/files/banner_store.webp?v=1740225886&width=2000" alt="Slide 3">
+            <img src="https://img.freepik.com/free-psd/arts-handcraft-youtube-banner_23-2150445115.jpg" alt="Slide 4">
+            <img src="https://img.freepik.com/free-psd/arts-handcraft-youtube-banner_23-2150445115.jpg" alt="Slide 5">
+        </div>
+        <section>
+            <h2>Discover Our Bestsellers</h2>
+            
+            <div class="slider-container-card">
+               
+                <div class="slider-wrapper">
+                    {% if top_rated_products %}
+                    {% for perfume in top_rated_products %}
+                    <div class="card">
+                        
+                        <div class="image-container">
+                            <img src="{{ perfume.main_image.url }}" alt="Product 1">
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="product-inform">{{ perfume.name }}</h4>
+                            <p class="price">From.${{ perfume.price }}</p>
+                        </div>
+                       
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                
+        
+                <div class="slider-controls">
+                    <button id="prev"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button id="next"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+       
+        <section>
+            <h2>Shop for Someone Who love you!</h2>
+            <div class="card-container">
+                <div class="cards">
+                    <img src="https://myop.in/cdn/shop/files/For_Him.webp?v=1715237737&width=1080" alt="Image 1">
+                    <div class="overlay">
+                        <a href="#">For Him</a>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+        
+                <div class="cards">
+                    <img src="https://myop.in/cdn/shop/files/For_Her.webp?v=1714541130&width=1080" alt="Image 2">
+                    <div class="overlay">
+                        <a href="#">For Her</a>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+        
+                <div class="cards">
+                    <img src="https://myop.in/cdn/shop/files/Unisex_copy.webp?v=1718107909&width=1080" alt="Image 3">
+                    <div class="overlay">
+                        <a href="#">for Unisex</a>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+                <div class="cards">
+                    <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyZnVtZXxlbnwwfHwwfHx8MA%3D%3D" alt="Image 3">
+                    <div class="overlay">
+                        <a href="#">Explore Everything</a>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="row mt-5 text">
+                <div class="col">
+                    <h2 class="mb-2">THE BEST PERFUME MADE<BR>IN INDIA</h2>
+                        <a href="#" class="space-btn">Locate Us</a>
+                </div>
+                <div class="col">
+                    <h4>Make Your Own Perfume (MYOP) is India's pioneering perfume bar offering top-notch, value for money fragrances with exceptional expertise in the art & science of perfumery.</h4>
+                    <h3 class="bold">INDIA'S BEST PERFUME BAR.</h3>
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <section>
+        <div class="animated-section an mt-5">
+            <div><h2>Welcome to Our MyPerfume.com</h2><br></div>
+            <div><a href="" class="link-create">CREATE YOUR OWN PERFUME &nbsp;<i class="fa-solid fa-arrow-right"></i></a></div>
+        </div>
+    </section>
+    <section class="mt-5">
+        <div class="container">
+        <center><h1>-Introducing latest arrivals-</h1></center>
+        <div class="row">
+            {% if latest %}
+                {% for perfume in latest %}
+            <div class="col-3">
+                
+                <div class="card-product">
+
+                    <div class="imgBox">
+                      <img src="{{ perfume.main_image.url }}" alt="mouse corsair" class="mouse">
+                    </div>
+                  
+                    <div class="contentBox">
+                      <h3>{{ perfume.name }}</h3>
+                      <h2 class="price">${{ perfume.price }}</h2>
+                      <a href="{% url 'product_detail' perfume.id %}" class="buy">Buy Now</a>
+                    </div>
+                  
+                  </div>
+                 
+
+            </div>
+            {% endfor %}
+            {% endif %}
+
+        </div>
+        <div class="row mt-4">
+            {% if latest_two %}
+            {% for perfume in latest_two %}
+            <div class="col-3">
+              
+                <div class="card-product">
+
+                    <div class="imgBox">
+                      <img src="{{ perfume.main_image.url }}" alt="mouse corsair" class="mouse">
+                    </div>
+                  
+                    <div class="contentBox">
+                      <h3>{{ perfume.name }}</h3>
+                      <h2 class="price">${{ perfume.price }}</h2>
+                      <a href="{% url 'product_detail' perfume.id %}" class="buy">Buy Now</a>
+                    </div>
+                  
+                  </div>
+
+            </div>
+            {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+    </section>
+    <section class="mt-5"><div class="container">
+        <div class="row">
+            <div class="col-4">
+                <h2>Explore Our Summer Picks</h2>
+                <div class="card-product mt-5">
+                    {% if summer_pick %}
+
+                    <div class="imgBox">
+                      <img src="{{ summer_pick.main_image.url }}" alt="mouse corsair" class="mouse">
+                    </div>
+                  
+                    <div class="contentBox">
+                      <h3>{{ summer_pick.name }}</h3>
+                      <h2 class="price">${{ summer_pick.price }}</h2>
+                      <a href="{% url 'product_detail' summer_pick.id %}" class="buy">Buy Now</a>
+                    </div>
+                    {% endif %}
+                  
+                  </div>
+
+            </div>
+            <div class="col-8">
+                <div class="row mb-3">
+                    {% if summer_pick_all %}
+                    {% for perfume in summer_pick_all %}
+                    <div class="col product-card">
+                        <img src="{{ perfume.main_image.url }}" alt="Product Image">
+                        <div class="product-info">
+                            <h3>{{ perfume.name }}</h3>
+                            <p>${{ perfume.price }}</p><a href="{% url 'product_detail' perfume.id %}" style="text-decoration: none;border-radius: 35px; background-color: white; padding: 12px; color:blue">BUY NOW</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="col product-card">
+                        <img src="https://myop.in/cdn/shop/files/For_Him.webp?v=1715237737&width=1080" alt="Product Image">
+                        <div class="product-info">
+                            <h3>Product Name</h3>
+                            <p>$49.99</p><a href="" style="text-decoration: none;border-radius: 35px; background-color: white; padding: 12px;">BUY</a>
+                        </div>
+                    </div>
+                    <div class="col product-card">
+                        <img src="https://myop.in/cdn/shop/files/For_Him.webp?v=1715237737&width=1080" alt="Product Image">
+                        <div class="product-info">
+                            <h3>Product Name</h3>
+                            <p>$49.99</p><a href="" style="text-decoration: none;border-radius: 35px; background-color: white; padding: 12px;">BUY</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div></section> {% endblock %}
+    <section>
+        <div class="container mt-5">
+            <center><h1>About us</h1></center>
+            
+            <div class="row">
+                <div class="col-6 img">
+                    <img src="https://myop.in/cdn/shop/files/Storekurla.jpg?v=1715596487&width=1000" alt="">
+                </div>
+                <div class="col-6">
+                    <center><h2>Why We Do,What We Do</h2></center>
+                    <p class="para">Make Your Own Perfume, MYOP is India's first perfume bar known for high-quality, long-lasting fragrances with unparalleled expertise in the art and science of perfumery. MYOP perfumes, reformulated with 50% fragrance oil concentration last longer in tropical weather conditions. Our experts can guide the customer to not just select the right perfume, but also provide them with the unique experience of mixing perfumes to create a fully personalised olfactory experience.</p><br>
+                    <a href="" class="link-create mt-5" style="background-color: rgb(4, 191, 191); color: white;">More About</a>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <section>
+        <div class="row mt-5 mb-5 offer">
+            <div class="col-4" style="border-right: 1px solid grey;">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="https://myop.in/cdn/shop/files/MYOP_LOGO_All_1_.pngwhite.png?v=1709801663&width=500" alt="">
+                    </div>
+                    <div class="col-9">
+                        <h4>Free Shipping</h4>
+                        <p>Free shipping on orders above ₹399 across India</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4" style="border-right: 1px solid grey;">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="https://myop.in/cdn/shop/files/MYOP_LOGO_All_1_.pngwhite.png?v=1709801663&width=500" alt="">
+                    </div>
+                    <div class="col-9">
+                        <h4>EASY RETURNS</h4>
+                        <p>Simple return process with the perfumes</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-4" >
+                <div class="row">
+                    <div class="col-3">
+                        <img src="https://myop.in/cdn/shop/files/MYOP_LOGO_All_1_.pngwhite.png?v=1709801663&width=500" alt="">
+                    </div>
+                    <div class="col-9">
+                        <h4>Secure payment</h4>
+                        <p>Your payment information is processed through secure payment gateway</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="news-footer mt-5">
+        <div class="footer-container">
+            <div class="footer-section about">
+                <div class="footer-section logo">
+                    <img src="/media/download.png" alt="Logo" class="footer-logo">
+                </div>
+                <h2>About Us</h2>
+                <p>Your trusted source for breaking news, analysis, and in-depth reports.</p>
+            </div>
+    
+            <div class="footer-section links">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="">Home</a></li>
+                    <li><a href="">Editor Talk's</a></li>
+                    <li><a href="">Latest News</a></li>
+                    
+                    <li><a href="">Sports</a></li>
+                    
+                    <li><a href="">Profile</a></li>
+                    
+                    <li><a href="">Login</a></li>
+                </ul>
+               
+            </div>
+    
+            <div class="footer-section social">
+                <h2>Follow Us</h2>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p>&copy; 2025 വാർത്തക്കാരൻ | All Rights Reserved</p>
+            <p>Created & Designed by 
+                <strong>
+                   <a href="https://www.linkedin.com/in/minhajvp" style="text-decoration: none; color: white;">Minhaj</a>
+                </strong>
+             </p>
+                     </div>
+    </footer>
+
+
+    <!-- Cart Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+  
+        <div class="modal-header flex">
+          <h5 class="modal-title" id="cartModalLabel">Your Cart</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+  
+        <div class="modal-body">
+          {% if cart_items %}
+            <table class="table">
+              <thead>
+                <tr>
+                    <th></th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <th><img src="{{ item.product.main_image.url }}" alt="" height="100px" width="100px" style="border-radius: 10px;"></th>
+                  <td>{{ item.product.name }}</td>
+                  <td>${{ item.product.price }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>${{ item.row_total }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                  <td colspan="3" class="text-end"><strong>Grand Total:</strong></td>
+                  <td><strong>${{ total_price }}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          {% else %}
+            <p>Your cart is empty.</p>
+          {% endif %}
+        </div>
+  
+        <div class="modal-footer">
+          <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll(".slider-container img");
+
+        function showSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove("active");
+            });
+
+            slideIndex++;
+            if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            }
+
+            slides[slideIndex].classList.add("active");
+            setTimeout(showSlides, 5000); // Change image every 3 seconds
+        }
+
+        showSlides(); // Start the slideshow
+    </script>
+    <script>
+        const sliderWrapper = document.querySelector(".slider-wrapper");
+        const prevBtn = document.getElementById("prev");
+        const nextBtn = document.getElementById("next");
+    
+        const cards = document.querySelectorAll(".card");
+        const totalCards = cards.length;
+        const visibleCards = 4;
+        const cardMargin = 20;
+    
+        let currentIndex = 0;
+    
+        // Fallback to 0 if no cards
+        const cardWidth = cards.length > 0 ? cards[0].offsetWidth + cardMargin : 0;
+        const maxIndex = Math.max(0, totalCards - visibleCards);
+    
+        // Hide slider controls if total cards <= visible
+        if (totalCards <= visibleCards) {
+            document.querySelector(".slider-controls").style.display = "none";
+        }
+    
+        function updateSlider() {
+            // Keep currentIndex within bounds
+            if (currentIndex < 0) currentIndex = maxIndex;
+            if (currentIndex > maxIndex) currentIndex = 0;
+    
+            sliderWrapper.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+            sliderWrapper.style.transition = "transform 0.5s ease";
+        }
+    
+        nextBtn.addEventListener("click", () => {
+            currentIndex++;
+            updateSlider();
+        });
+    
+        prevBtn.addEventListener("click", () => {
+            currentIndex--;
+            updateSlider();
+        });
+    
+        // Auto-slide only if cards > visible
+        if (totalCards > visibleCards) {
+            setInterval(() => {
+                currentIndex++;
+                updateSlider();
+            }, 6000);
+        }
+    </script>
+    
+
+</body>
+</html>

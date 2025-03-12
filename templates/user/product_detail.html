@@ -1,0 +1,337 @@
+{% extends 'user/home.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<head>
+    <title>{{ product.name }}</title>
+    <style>
+        .sub-image {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .main-image {
+            width: 100%;
+            border-radius: 15px;
+        }
+        .column {
+        height: 550px;
+        overflow-y: scroll;
+        scrollbar-width: none;       /* Firefox */
+        -ms-overflow-style: none;    /* IE/Edge */
+        }
+
+        .column::-webkit-scrollbar {
+            display: none;               /* Chrome, Safari */
+        }
+        details {
+  
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Summary tag styling */
+summary {
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 8px 0;
+  color: #333;
+  list-style: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Remove default disclosure triangle in WebKit */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Add custom arrow icon */
+summary::after {
+  content: "▼";
+  position: absolute;
+  right: 0;
+  top: 8px;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+/* Rotate arrow when open */
+details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+/* Smooth content transition using max-height */
+details > *:not(summary) {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Optional fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Progress bar styling */
+.progress-bar-container {
+  width: 100%;
+  height: 25px;
+  background-color: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #81c784);
+  color: white;
+  text-align: center;
+  font-size: 13px;
+  line-height: 18px;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+.quantity-counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.quantity-input {
+  width: 50px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="row mt-5">
+        <div class="col-5">
+            <img src="{{ product.main_image.url }}" alt="main-image" class="main-image">
+        </div>
+        <div class="col-3 column">
+            {% if product.images.all %}
+            {% for image in product.images.all %}
+            <div class="row mb-3">
+                <div class="col">
+                    <img src="{{ image.image.url }}" alt="sub-image" class="sub-image">
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+        </div>
+        <div class="col-4">
+            <div class="row">
+                <div class="col">
+                    <h2><b>{{ product.name }}</b></h2>
+                    <h4><b>From.${{ product.price }}</b></h4>
+                    {% if product.sizes.all %}
+                    {% for size in product.sizes.all %}
+                    <button class="btn btn-primary">{{ size.size }}ml</button>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <details>
+                        <summary>Intensity</summary>
+                        <p>This perfume has a medium to high intensity, suitable for evening wear.</p>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: {{ product.sillage }}%;">Sillage</div>
+                          </div><br>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: {{ product.projection }}%;">Projection</div>
+                          </div><br>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: {{ product.longevity }}%;">Longevity</div>
+                          </div><br>
+                      </details>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <details>
+                        <summary>Notes & Composition </summary>
+                        <p>This perfume has a medium to high intensity, suitable for evening wear.</p>
+                        <ul>
+                            <li>Top Note</li>
+                            <ul>
+                                <li>{{ product.top_note }}</li>
+                            </ul>
+                            <li>Middle Note</li>
+                            <ul>
+                                <li>{{ product.middle_note }}</li>
+                            </ul>
+                            <li>Base Note</li>
+                            <ul>
+                                <li>{{ product.base_note }}</li>
+                            </ul>
+                        </ul>
+                      </details>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <details>
+                        <summary>Personality</summary>
+                        <p>This perfume has a medium to high intensity, suitable for evening wear.</p>
+                        {% if product.gender == 'Male' %}
+                        <h2>For Male</h2>
+                        {% elif product.gender == 'Female' %}
+                        <h2>For Female</h2>
+                        {% else %}
+                        <h2>UniSex</h2>
+                        {% endif %}
+                      </details>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div class="quantity-counter" data-product-id="{{ product.id }}">
+                        <button class="decrement">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" readonly />
+                        <button class="increment">+</button>
+                      </div>
+                </div>
+                <div class="col-6">
+                    <button class="add-to-cart btn btn-success add-to-cart-btn" data-product-id="{{ product.id }}" style="width: 100%;">
+                        <span class="btn-text">Add to Cart</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'buy_now' product.id %}" class="btn btn-danger mt-2" style="width: 100%;">Buy Now</a>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</body>
+<script>
+    document.querySelectorAll(".quantity-counter").forEach(counter => {
+        const input = counter.querySelector(".quantity-input");
+        const incrementBtn = counter.querySelector(".increment");
+        const decrementBtn = counter.querySelector(".decrement");
+
+        incrementBtn.addEventListener("click", () => {
+            let quantity = parseInt(input.value);
+            quantity++;
+            input.value = quantity;
+        });
+
+        decrementBtn.addEventListener("click", () => {
+            let quantity = parseInt(input.value);
+            if (quantity > 1) {
+                quantity--;
+                input.value = quantity;
+            }
+        });
+    });
+
+    // Add to Cart / Buy Now buttons (backend update only here)
+    document.querySelectorAll(".add-to-cart, .buy-now").forEach(button => {
+        button.addEventListener("click", function() {
+            const productId = this.getAttribute("data-product-id");
+            const counter = document.querySelector(`.quantity-counter[data-product-id="${productId}"]`);
+            const quantity = parseInt(counter.querySelector(".quantity-input").value);
+
+            updateQuantityOnBackend(productId, quantity);
+        });
+    });
+
+    function updateQuantityOnBackend(productId, quantity) {
+        fetch("/update-quantity/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken(),
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: quantity
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Updated:", data.message);
+        });
+    }
+
+    function getCSRFToken() {
+        const cookie = document.cookie.match(/csrftoken=([^;]+)/);
+        return cookie && cookie[1];
+    }
+</script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttons = document.querySelectorAll(".add-to-cart-btn");
+        
+            buttons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const productId = this.getAttribute("data-product-id");
+                    const btnText = this.querySelector(".btn-text");
+                    const spinner = this.querySelector(".spinner-border");
+        
+                    // Show loading spinner
+                    spinner.classList.remove("d-none");
+                    btnText.textContent = "Adding...";
+        
+                    fetch("{% url 'add_to_cart_ajax' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": "{{ csrf_token }}",
+                        },
+                        body: JSON.stringify({ product_id: productId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            btnText.textContent = "Added ✔";
+                            spinner.classList.add("d-none");
+                        } else {
+                            btnText.textContent = "Error";
+                        }
+                    })
+                    .catch(error => {
+                        btnText.textContent = "Failed";
+                        spinner.classList.add("d-none");
+                        console.error(error);
+                    });
+                });
+            });
+        });
+        </script>
+        
+    
+
+{% endblock %}
